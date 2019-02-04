@@ -78,7 +78,7 @@ class Router(formatOps: FormatOps) {
     val style = styleMap.at(formatToken)
     val leftOwner = owners(formatToken.left)
     val rightOwner = owners(formatToken.right)
-    val newlines = newlinesBetween(formatToken.between)
+    lazy val newlines = newlinesBetween(formatToken.between)
 
     formatToken match {
       case FormatToken(_: BOF, _, _) => DontSplitSeq

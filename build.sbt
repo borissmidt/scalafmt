@@ -99,6 +99,10 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
       // scala-reflect is an undeclared dependency of fansi, see #1252.
       // Scalafmt itself does not require scala-reflect.
       "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    ),
+      scalacOptions ++= Seq(
+        "-opt:l:method",
+        "-opt-inline-from:org.scalafmt.**"
     )
   )
   .jsSettings(
@@ -127,6 +131,10 @@ lazy val cli = project
       "com.googlecode.java-diff-utils" % "diffutils" % "1.3.0",
       "com.martiansoftware" % "nailgun-server" % "0.9.1",
       "com.github.scopt" %% "scopt" % "3.5.0"
+    ),
+    scalacOptions ++= Seq(
+      "-opt:l:method",
+      "-opt-inline-from:org.scalafmt.**"
     )
   )
   .dependsOn(coreJVM, interfaces)
@@ -158,6 +166,10 @@ lazy val tests = project
       "com.lihaoyi" %% "scalatags" % "0.6.3",
       "org.typelevel" %% "paiges-core" % "0.2.0",
       scalametaTestkit
+    ),
+    scalacOptions ++= Seq(
+      "-opt:l:method",
+      "-opt-inline-from:org.scalafmt.**"
     )
   )
   .dependsOn(

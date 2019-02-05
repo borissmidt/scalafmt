@@ -97,7 +97,7 @@ object TreeOps {
   }
 
   def getStatementStarts(tree: Tree): Map[TokenHash, Tree] = {
-    val ret = mutable.Map.newBuilder[TokenHash, Tree]
+    val ret = new mutable.LongMap[Tree]()
     ret.sizeHint(tree.tokens.length)
 
     def addAll(trees: Seq[Tree]): Unit = {

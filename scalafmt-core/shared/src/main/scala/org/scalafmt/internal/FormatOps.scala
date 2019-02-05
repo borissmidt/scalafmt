@@ -289,7 +289,7 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
       start: FormatToken,
       end: Token,
       matches: Token => Boolean): Set[Token] = {
-    val result = Set.newBuilder[Token]
+    val result = new mutable.HashSet[Token]()
     var prev = start
     var curr = next(start)
 
@@ -307,7 +307,7 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
         curr = next(curr)
       }
     }
-    result.result()
+    result.result().toSet
   }
 
   def defnSiteLastToken(open: Token, tree: Tree): Token = {

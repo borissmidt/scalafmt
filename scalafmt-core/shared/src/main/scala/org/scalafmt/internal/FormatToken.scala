@@ -18,7 +18,7 @@ import org.scalafmt.util.Whitespace
   * @param right The right non-whitespace token.
   * @param between The whitespace tokens between left and right.
   */
-case class FormatToken(left: Token, right: Token, between: Vector[Token]) {
+case class FormatToken(left: Token, right: Token,between: Vector[Token]) {
 
   override def toString = s"${left.syntax}∙${right.syntax}"
 
@@ -52,7 +52,7 @@ object FormatToken {
     tokens.toArray.foreach {
       case t @ Whitespace() => whitespace += t
       case right =>
-        val tok = FormatToken(left, right, whitespace.result)
+        val tok = FormatToken(left, right,whitespace.result)
         result += tok
         left = right
         whitespace.clear()

@@ -27,7 +27,9 @@ class StyleMap(
   import TokenOps.hash
   val literalR: FilterMatcher = init.binPack.literalsRegex
   private val prefix = "\\s*scalafmt: ".r
-  val forcedBinPack: mutable.Set[Tree] = mutable.Set.empty
+  private val forcedBinPackk = mutable.ArrayBuffer.empty[Tree]
+
+  def forcedBinPack(t: Tree) = forcedBinPackk.exists(_.eq(t)) //only check the reference instead of hashing the tree completely has high improvement and the tree should be unique in memory
   val (isEmpty: Boolean, tok2style: Map[FormatToken, ScalafmtConfig]) = {
     var curr = init
     var empty = true
@@ -46,7 +48,7 @@ class StyleMap(
         case open @ LeftParen()
             if init.binPack.literalArgumentLists &&
               isLiteralArgumentList(open) =>
-          forcedBinPack += owners(hash(open))
+          forcedBinPackk += owners(hash(open))
           empty = false
           curr = setBinPack(curr, callSite = true)
           disableBinPack += matching(hash(open))

@@ -330,7 +330,7 @@ class Router(formatOps: FormatOps) {
         val newline: Modification = NewlineT(
           shouldGet2xNewlines(tok, style, owners))
         val expire = rightOwner.tokens
-          .find(_.isInstanceOf[Equals])
+          .find(_.isInstanceOf[Equals]) //improves performance a lot.
           .map { equalsToken =>
             val equalsFormatToken = leftTok2tok(equalsToken)
             if (equalsFormatToken.right.is[LeftBrace]) {
@@ -488,7 +488,7 @@ class Router(formatOps: FormatOps) {
         val extraIndent: Length =
           if (style.poorMansTrailingCommasInConfigStyle) Num(2)
           else Num(0)
-        val isForcedBinPack = styleMap.forcedBinPack.contains(leftOwner)
+        val isForcedBinPack = styleMap.forcedBinPack(leftOwner)
         val policy =
           if (isForcedBinPack) Policy(newlineBeforeClose, close.end)
           else {

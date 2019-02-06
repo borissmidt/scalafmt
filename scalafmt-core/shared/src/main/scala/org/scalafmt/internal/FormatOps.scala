@@ -56,18 +56,16 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
 
   private val vAlignDepthCache = mutable.Map.empty[Tree, Int]
   // Maps token to number of non-whitespace bytes before the token's position.
-  private final val nonWhitespaceOffset: Map[Token, Int] = {
-    val resultB = Map.newBuilder[Token, Int]
+  private final val nonWhitespaceOffset: mutable.Map[Token, Int] = {
+    val resultB = new mutable.OpenHashMap[Token, Int](tree.tokens.size * 2)
     var curr = 0
-    tree.tokens.foreach {
-      case t =>
+    tree.tokens.foreach { t =>
         resultB += (t -> curr)
-        if (!t.is[Whitespace]) {
+        if (!t.isInstanceOf[Whitespace]) {
           curr += (t.end - t.start)
         }
-
     }
-    resultB.result()
+    resultB
   }
 
   val (forceConfigStyle, emptyQueueSpots) = getForceConfigStyle
@@ -157,8 +155,8 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
     result.result()
   }
 
-  lazy val tok2idx: Map[FormatToken, Int] =
-    HashMap[FormatToken, Int](tokens.zipWithIndex: _*)
+  lazy val tok2idx: mutable.Map[FormatToken, Int] =
+     mutable.HashMap[FormatToken, Int](tokens.zipWithIndex: _*)
 
   def prev(tok: Token): Token = prev(leftTok2tok(tok)).right
   def prev(tok: FormatToken): FormatToken = {

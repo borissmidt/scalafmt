@@ -194,7 +194,7 @@ object TreeOps {
     * Creates lookup table from token offset to its closest scala.meta tree.
     */
   def getOwners(tree: Tree): TokenHash => Tree = {
-    val result = new mutable.LongMap[Tree](1024)
+    val result = new mutable.LongMap[Tree](2048)
     def loop(x: Tree): Unit = {
       x.tokens.foreach { tok =>
         result += hash(tok) -> x
@@ -202,7 +202,7 @@ object TreeOps {
       x.children.foreach(loop)
     }
     loop(tree)
-    result.result()
+    result
   }
 
   @tailrec

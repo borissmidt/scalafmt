@@ -34,6 +34,7 @@ case class FormatToken(left: Token, right: Token,between: Vector[Token]) {
   /**
     * A format token is uniquely identified by its left token.
     */
+  override def equals(o: Any): Boolean = this.eq(o.asInstanceOf[AnyRef])
   override def hashCode(): Int = hash(left).##
 }
 

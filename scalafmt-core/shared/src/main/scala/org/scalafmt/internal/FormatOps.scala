@@ -46,17 +46,17 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
 
   final val tokens: Array[FormatToken] = FormatToken.formatTokens(tree.tokens)
 
-  final val ownersMap: TokenHash => Tree = getOwners(tree)
-  final val statementStarts = getStatementStarts(tree)
-  final val dequeueSpots = getDequeueSpots(tree) ++ statementStarts.keys
-  final val matchingParentheses: Map[TokenHash, Token] = getMatchingParentheses(
+  final lazy val ownersMap: TokenHash => Tree = getOwners(tree)
+  final lazy val statementStarts = getStatementStarts(tree)
+  final lazy val dequeueSpots = getDequeueSpots(tree) ++ statementStarts.keys
+  final lazy val matchingParentheses: Map[TokenHash, Token] = getMatchingParentheses(
     tree.tokens)
-  final val styleMap =
+  final lazy val styleMap =
     new StyleMap(tokens, initStyle, ownersMap, matchingParentheses)
 
   private val vAlignDepthCache = mutable.Map.empty[Tree, Int]
   // Maps token to number of non-whitespace bytes before the token's position.
-  private final val nonWhitespaceOffset: mutable.Map[Token, Int] = {
+  private final lazy val nonWhitespaceOffset: mutable.Map[Token, Int] = {
     val resultB = new mutable.OpenHashMap[Token, Int](tree.tokens.size * 2)
     var curr = 0
     tree.tokens.foreach { t =>
@@ -68,7 +68,7 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
     resultB
   }
 
-  val (forceConfigStyle, emptyQueueSpots) = getForceConfigStyle
+  lazy val (forceConfigStyle, emptyQueueSpots) = getForceConfigStyle
 
   @inline def matching(token: Token): Token = matchingParentheses(hash(token))
 
@@ -85,7 +85,7 @@ class FormatOps(val tree: Tree, val initStyle: ScalafmtConfig) {
    * ...
    *
    */
-  val (packageTokens, importTokens, argumentStarts, optionalNewlines) = {
+  lazy val (packageTokens, importTokens, argumentStarts, optionalNewlines) = {
     val packages = Set.newBuilder[Token]
     val imports = Set.newBuilder[Token]
     val arguments = mutable.Map.empty[TokenHash, Tree]

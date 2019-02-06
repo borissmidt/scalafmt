@@ -33,7 +33,7 @@ class BestFirstSearch(
   /**
     * Precomputed table of splits for each token.
     */
-  val routes: Array[Array[Split]] = {
+  val routes: Int => Array[Split] = {
     val router = new Router(formatOps)
     val result = Array.newBuilder[Array[Split]]
     tokens.foreach { t =>
@@ -41,6 +41,7 @@ class BestFirstSearch(
     }
     result.result()
   }
+
   val noOptimizations = noOptimizationZones(tree)
   var explored = 0
   var deepestYet = State.start
